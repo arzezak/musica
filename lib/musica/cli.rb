@@ -1,11 +1,17 @@
 module Musica
   class Cli
     def initialize(argv)
-      @argv = argv
+      @prompt = argv.join(" ")
+      @player = Musica::Player.new(application: "Music")
     end
 
     def run
-      puts Musica::Player.new(application: "Music").status
+      player.tell prompt unless prompt.empty?
+      $stdout << "\u{1F3A7} #{player.status}\n"
     end
+
+    private
+
+    attr_reader :argv, :player, :prompt
   end
 end

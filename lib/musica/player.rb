@@ -10,8 +10,8 @@ module Musica
       (state == "playing") ? track : state
     end
 
-    def track
-      "#{artist} - #{name}"
+    def tell(command)
+      `osascript -e 'tell application "#{application}" to #{command}'`.chomp
     end
 
     private
@@ -30,8 +30,8 @@ module Musica
       tell "return player state"
     end
 
-    def tell(command)
-      `osascript -e 'tell application "#{application}" to #{command}'`.chomp
+    def track
+      "#{artist} - #{name}"
     end
   end
 end

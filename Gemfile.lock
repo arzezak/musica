@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    musica (0.0.1)
+    musica (0.0.2)
 
 GEM
   remote: https://rubygems.org/
