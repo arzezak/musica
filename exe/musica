@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "musica"
+
+Musica::Cli.new(ARGV).run
