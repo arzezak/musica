@@ -7,7 +7,13 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    debug (1.7.1)
+      irb (>= 1.5.0)
+      reline (>= 0.3.1)
     diff-lcs (1.5.0)
+    io-console (0.6.0)
+    irb (1.6.3)
+      reline (>= 0.3.0)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
     parallel (1.22.1)
@@ -16,6 +22,8 @@ GEM
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.7.0)
+    reline (0.3.3)
+      io-console (~> 0.5)
     rexml (3.2.5)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
@@ -57,6 +65,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  debug (~> 1.7, >= 1.7.1)
   musica!
   rake (~> 13.0)
   rspec (~> 3.0)
