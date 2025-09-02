@@ -33,7 +33,7 @@ module Musica
     def create_config(config_dir, config_file)
       FileUtils.mkdir_p(config_dir)
 
-      default_config = { "player" => "Music" }
+      default_config = {"player" => "Music"}
 
       File.write(config_file, YAML.dump(default_config))
     end
