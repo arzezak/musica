@@ -20,7 +20,24 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+Run commands to control your music player:
+
+    $ musica play
+    $ musica pause
+    $ musica next track
+
+## Configuration
+
+Musica can be configured to work with different music players. Create a configuration file at:
+- `$XDG_CONFIG_HOME/musica/config.yml` (if XDG_CONFIG_HOME is set)
+- `~/.config/musica/config.yml` (default)
+
+Example configuration:
+```yaml
+player: "Spotify"
+```
+
+If no configuration file exists, one will be created automatically with the default player set to "Music".
 
 ## Development
 
