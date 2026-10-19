@@ -1,9 +1,13 @@
+## [0.3.0] - 2026-10-19
+
+- Turn plain requests into commands by default, without `-n`
+- Send AppleScript commands as is with `-s`/`--script`, which was the default before
+- Add `-h`/`--help` and `-v`/`--version`
+
 ## [0.2.0] - 2026-10-19
 
-- Turn plain requests into commands with Apple's on-device model through `fm`
-- Send AppleScript commands as is with `-s`/`--script`, which was the default before
+- Add natural language commands with `-n`, using Apple's on-device model through `fm`
 - Play tracks and albums from the Music library by name, artist or album
-- Add `-h`/`--help` and `-v`/`--version`
 
 ## [0.1.2] - 2025-09-01
 
