@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "musica/cli"
+require_relative "musica/config"
 require_relative "musica/player"
 require_relative "musica/version"
 
