@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
+require "open3"
+
 module Musica
   class Player
-    def initialize(application:)
+    OSASCRIPT = ->(script) { Open3.capture2("osascript", "-e", script).first.chomp }
+
+    def initialize(application:, runner: OSASCRIPT)
       @application = application
+      @runner = runner
     end
 
     def status
@@ -11,12 +16,12 @@ module Musica
     end
 
     def tell(command)
-      `osascript -e 'tell application "#{application}" to #{command}'`.chomp
+      runner.call(%(tell application "#{application}" to #{command}))
     end
 
     private
 
-    attr_reader :application
+    attr_reader :application, :runner
 
     def artist
       tell "return artist of the current track"

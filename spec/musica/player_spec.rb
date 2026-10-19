@@ -1,50 +1,60 @@
 # frozen_string_literal: true
 
 RSpec.describe Musica::Player do
-  let(:player) { described_class.new(application: "Music") }
+  let(:responses) { {} }
+  let(:runner) { ->(script) { responses.fetch(script) } }
+  let(:player) { described_class.new(application: "Music", runner: runner) }
 
   describe "#status" do
-    context "when not running" do
+    context "when stopped" do
       it "returns stopped" do
-        mock("return player state").and_return("stopped\n")
+        respond("return player state", "stopped")
 
         expect(player.status).to eq("stopped")
       end
     end
 
-    context "when running" do
-      context "when no track is playing" do
-        it "returns stopped" do
-          mock("return player state").and_return("stopped\n")
+    context "when paused" do
+      it "returns paused" do
+        respond("return player state", "paused")
 
-          expect(player.status).to eq("stopped")
-        end
+        expect(player.status).to eq("paused")
       end
+    end
 
-      context "when the player is paused" do
-        it "returns paused" do
-          mock("return player state").and_return("paused\n")
+    context "when playing" do
+      it "returns the artist and the name of the current track" do
+        respond("return player state", "playing")
+        respond("return artist of the current track", "Led Zeppelin")
+        respond("return name of the current track", "Black Dog")
 
-          expect(player.status).to eq("paused")
-        end
+        expect(player.status).to eq("Led Zeppelin - Black Dog")
       end
+    end
+  end
 
-      context "when playing" do
-        it "returns the name and the artist of the current track" do
-          mock("return player state").and_return("playing\n")
-          mock("return artist of the current track").and_return("Led Zeppelin")
-          mock("return name of the current track").and_return("Black Dog")
+  describe "#tell" do
+    it "sends the command to the application" do
+      respond("play", "")
 
-          expect(player.status).to eq("Led Zeppelin - Black Dog")
-        end
-      end
+      expect(player.tell("play")).to eq("")
+    end
+  end
+
+  describe "OSASCRIPT" do
+    it "passes the script as a single argument, without a shell" do
+      allow(Open3).to receive(:capture2).and_return(["out\n", nil])
+
+      result = described_class::OSASCRIPT.call(%(play track "Don't Stop"))
+
+      expect(Open3).to have_received(:capture2).with("osascript", "-e", %(play track "Don't Stop"))
+      expect(result).to eq("out")
     end
   end
 
   private
 
-  def mock(command)
-    allow_any_instance_of(Kernel).to receive(:`)
-      .with("osascript -e 'tell application \"Music\" to #{command}'")
+  def respond(command, output)
+    responses[%(tell application "Music" to #{command})] = output
   end
 end
