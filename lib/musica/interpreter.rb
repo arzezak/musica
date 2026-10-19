@@ -69,7 +69,6 @@ module Musica
 
     def call(request)
       intent = JSON.parse(runner.call(request))
-      # The model sometimes invents a name, artist or album, so keep only what the request mentions
       name = mentioned(intent["name"], request)
       artist = mentioned(intent["artist"], request)
       album = mentioned(intent["album"], request)
