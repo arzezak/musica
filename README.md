@@ -3,11 +3,6 @@
 This is a Ruby command-line tool that interacts with music players on macOS
 using AppleScript.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be
-able to package up your Ruby library into a gem. Put your Ruby code in the file
-`lib/musica`. To experiment with that code, run `bin/console` for an interactive
-prompt.
-
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
@@ -20,11 +15,38 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-Run commands to control your music player:
+Musica passes its arguments straight to your music player as an AppleScript
+command, so `musica <command>` runs:
+
+```applescript
+tell application "<player>" to <command>
+```
+
+Any command in the player's AppleScript dictionary works (open it in Script
+Editor with File > Open Dictionary). For example:
 
     $ musica play
     $ musica pause
+    $ musica playpause
     $ musica next track
+    $ musica previous track
+    $ musica set sound volume to 50
+
+After each command, Musica prints the current status: the artist and track
+while playing, otherwise the player state:
+
+    $ musica play
+    🎧 Daft Punk - Digital Love
+    $ musica pause
+    🎧 paused
+
+Run `musica` without arguments to print the status alone.
+
+Commands can differ between players. For example, Music uses
+`set shuffle enabled to true` and Spotify uses `set shuffling to true`. Wrap
+commands that contain quotes in single quotes so the shell keeps them:
+
+    $ musica 'play playlist "Favorite Songs"'
 
 ## Configuration
 
