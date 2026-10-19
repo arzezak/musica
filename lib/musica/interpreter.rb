@@ -68,6 +68,9 @@ module Musica
     end
 
     def call(request)
+      command = request.strip.downcase
+      return command if COMMANDS.value?(command)
+
       intent = JSON.parse(runner.call(request))
       name = mentioned(intent["name"], request)
       artist = mentioned(intent["artist"], request)

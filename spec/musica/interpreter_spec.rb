@@ -5,6 +5,14 @@ RSpec.describe Musica::Interpreter do
   let(:interpreter) { described_class.new(runner: ->(_request) { JSON.generate(intent) }) }
 
   describe "#call" do
+    ["play", "Pause", " next track ", "previous track"].each do |request|
+      it "sends #{request.inspect} as is, without asking fm" do
+        interpreter = described_class.new(runner: ->(_request) { raise "fm was called" })
+
+        expect(interpreter.call(request)).to eq(request.strip.downcase)
+      end
+    end
+
     {
       "play" => "play",
       "pause" => "pause",

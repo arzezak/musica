@@ -1,3 +1,7 @@
+## [Unreleased]
+
+- Send `play`, `pause`, `next track` and `previous track` straight to the player, without `fm`
+
 ## [0.3.0] - 2026-10-19
 
 - Turn plain requests into commands by default, without `-n`

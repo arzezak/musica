@@ -25,7 +25,8 @@ Tell Musica what you want in plain words:
 
 Musica uses Apple's on-device model, through the `fm` command, to turn the
 request into a command for your music player. This needs macOS 26 with Apple
-Intelligence.
+Intelligence. The exact commands `play`, `pause`, `next track` and
+`previous track` go straight to the player, without `fm`.
 
 It understands play, pause, next and previous track, volume changes, and
 playing a track or album from your library by name, artist or album. To play
