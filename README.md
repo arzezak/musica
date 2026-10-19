@@ -58,9 +58,12 @@ Intelligence.
     $ musica -n turn it down a bit
     $ musica -n play Digital Love by Daft Punk
     $ musica -n play something by Queen
+    $ musica -n play the album Adore
 
 It understands play, pause, next and previous track, volume changes, and
-playing a track from your library by name or artist. Playing by name or artist
+playing a track or album from your library by name, artist or album. To play
+an album in order, Musica fills a playlist named "Musica" with its tracks and
+plays that playlist, replacing what was in it before. Playing from your library
 only works with Music.
 
 ## Configuration

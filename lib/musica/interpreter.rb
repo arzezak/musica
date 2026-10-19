@@ -15,6 +15,7 @@ module Musica
       - previous_track: go back to the previous song
       - change_volume: louder or quieter; delta is the change, 10 for a bit, 30 for a lot, negative for quieter
       - play_track: play a specific song; name is the song title, artist only if the request names one
+      - play_album: play an album; album is the album title, artist only if the request names one
       - unknown: anything else
     TEXT
 
@@ -37,19 +38,51 @@ module Musica
       "previous_track" => "previous track"
     }.freeze
 
+    # Music can't play an album or queue tracks, so refill a playlist with the
+    # album in disc and track order and play that instead
+    ALBUM = <<~APPLESCRIPT
+      set found to every track of library playlist 1 whose %<conditions>s
+      if found is {} then error "No album " & %<album>s & " in your library"
+      set positions to {}
+      repeat with t in found
+        set end of positions to (disc number of t) * 1000 + (track number of t)
+      end repeat
+      if not (exists user playlist "Musica") then make new user playlist with properties {name:"Musica"}
+      set musica to user playlist "Musica"
+      delete every track of musica
+      repeat (count of found) times
+        set best to 0
+        repeat with i from 1 to count of found
+          if item i of positions is not missing value then
+            if best is 0 or item i of positions < item best of positions then set best to i
+          end if
+        end repeat
+        duplicate item best of found to musica
+        set item best of positions to missing value
+      end repeat
+      play musica
+    APPLESCRIPT
+
     def initialize(runner: FM)
       @runner = runner
     end
 
     def call(request)
       intent = JSON.parse(runner.call(request))
-      # The model sometimes invents a name or artist, so keep only what the request mentions
+      # The model sometimes invents a name, artist or album, so keep only what the request mentions
       name = mentioned(intent["name"], request)
       artist = mentioned(intent["artist"], request)
+      album = mentioned(intent["album"], request)
 
       case intent["action"]
-      when "play", "play_track"
-        (name || artist) ? play(name, artist) : "play"
+      when "play", "play_track", "play_album"
+        if album && !name
+          play_album(album, artist)
+        elsif name || artist
+          play_track(name, artist, album)
+        else
+          "play"
+        end
       when "change_volume"
         volume(intent["delta"], request)
       else
@@ -65,10 +98,16 @@ module Musica
       value if value.is_a?(String) && !value.empty? && request.downcase.include?(value.downcase)
     end
 
-    def play(name, artist)
-      filters = {"name" => name, "artist" => artist}.compact.map { |key, value| "#{key} is #{quote(value)}" }
+    def play_track(name, artist, album)
+      "play (some track of library playlist 1 whose #{conditions("name" => name, "artist" => artist, "album" => album)})"
+    end
 
-      "play (some track of library playlist 1 whose #{filters.join(" and ")})"
+    def play_album(album, artist)
+      format(ALBUM, conditions: conditions("album" => album, "artist" => artist), album: quote(album))
+    end
+
+    def conditions(filters)
+      filters.compact.map { |key, value| "#{key} is #{quote(value)}" }.join(" and ")
     end
 
     def volume(delta, request)

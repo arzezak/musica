@@ -40,6 +40,26 @@ RSpec.describe Musica::Interpreter do
       )
     end
 
+    it "plays an album through the Musica playlist" do
+      intent.merge!("action" => "play_album", "album" => "Adore", "artist" => "The Smashing Pumpkins")
+
+      script = interpreter.call("play the album adore by the smashing pumpkins")
+
+      expect(script).to start_with(
+        %(set found to every track of library playlist 1 whose album is "Adore" and artist is "The Smashing Pumpkins"\n)
+      )
+      expect(script).to include(%(error "No album " & "Adore" & " in your library"))
+      expect(script).to end_with("play musica\n")
+    end
+
+    it "plays a track from an album" do
+      intent.merge!("action" => "play_track", "name" => "Ava Adore", "album" => "Adore")
+
+      expect(interpreter.call("play Ava Adore from Adore")).to eq(
+        %(play (some track of library playlist 1 whose name is "Ava Adore" and album is "Adore"))
+      )
+    end
+
     it "ignores an artist the request doesn't mention" do
       intent.merge!("action" => "play_track", "name" => "Black Dog", "artist" => "U2")
 

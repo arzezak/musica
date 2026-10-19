@@ -2,11 +2,22 @@
   "title": "Intent",
   "type": "object",
   "additionalProperties": false,
-  "required": ["action"],
+  "required": [
+    "action"
+  ],
   "properties": {
     "action": {
       "type": "string",
-      "enum": ["play", "pause", "next_track", "previous_track", "change_volume", "play_track", "unknown"],
+      "enum": [
+        "play",
+        "pause",
+        "next_track",
+        "previous_track",
+        "change_volume",
+        "play_track",
+        "play_album",
+        "unknown"
+      ],
       "description": "What to do"
     },
     "name": {
@@ -15,12 +26,22 @@
     },
     "artist": {
       "type": "string",
-      "description": "Artist name, for play_track"
+      "description": "Artist name, for play_track or play_album"
+    },
+    "album": {
+      "type": "string",
+      "description": "Album name, for play_album"
     },
     "delta": {
       "type": "integer",
       "description": "Volume change from -100 to 100, for change_volume"
     }
   },
-  "x-order": ["action", "name", "artist", "delta"]
+  "x-order": [
+    "action",
+    "name",
+    "artist",
+    "album",
+    "delta"
+  ]
 }
