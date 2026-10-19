@@ -15,24 +15,25 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-Musica passes its arguments straight to your music player as an AppleScript
-command, so `musica <command>` runs:
+Tell Musica what you want in plain words:
 
-```applescript
-tell application "<player>" to <command>
-```
+    $ musica skip this song
+    $ musica turn it down a bit
+    $ musica play Digital Love by Daft Punk
+    $ musica play something by Queen
+    $ musica play the album Adore
 
-Any command in the player's AppleScript dictionary works (open it in Script
-Editor with File > Open Dictionary). For example:
+Musica uses Apple's on-device model, through the `fm` command, to turn the
+request into a command for your music player. This needs macOS 26 with Apple
+Intelligence.
 
-    $ musica play
-    $ musica pause
-    $ musica playpause
-    $ musica next track
-    $ musica previous track
-    $ musica set sound volume to 50
+It understands play, pause, next and previous track, volume changes, and
+playing a track or album from your library by name, artist or album. To play
+an album in order, Musica fills a playlist named "Musica" with its tracks and
+plays that playlist, replacing what was in it before. Playing from your library
+only works with Music.
 
-After each command, Musica prints the current status: the artist and track
+After each request, Musica prints the current status: the artist and track
 while playing, otherwise the player state:
 
     $ musica play
@@ -40,31 +41,23 @@ while playing, otherwise the player state:
     $ musica pause
     🎧 paused
 
-Run `musica` without arguments to print the status alone.
+Run `musica` without arguments to print the status alone, `musica --help` for
+a summary of the options, and `musica --version` for the version.
+
+### AppleScript
+
+With `-s` (or `--script`), Musica sends its arguments to the player as an
+AppleScript command, without `fm`. Any command in the player's AppleScript
+dictionary works (open it in Script Editor with File > Open Dictionary):
+
+    $ musica -s playpause
+    $ musica -s set sound volume to 50
 
 Commands can differ between players. For example, Music uses
 `set shuffle enabled to true` and Spotify uses `set shuffling to true`. Wrap
 commands that contain quotes in single quotes so the shell keeps them:
 
-    $ musica 'play playlist "Favorite Songs"'
-
-### Natural language
-
-With `-n`, Musica uses Apple's on-device model, through the `fm` command, to
-turn a plain request into a command. This needs macOS 26 with Apple
-Intelligence.
-
-    $ musica -n skip this song
-    $ musica -n turn it down a bit
-    $ musica -n play Digital Love by Daft Punk
-    $ musica -n play something by Queen
-    $ musica -n play the album Adore
-
-It understands play, pause, next and previous track, volume changes, and
-playing a track or album from your library by name, artist or album. To play
-an album in order, Musica fills a playlist named "Musica" with its tracks and
-plays that playlist, replacing what was in it before. Playing from your library
-only works with Music.
+    $ musica -s 'play playlist "Favorite Songs"'
 
 ## Configuration
 

@@ -110,7 +110,7 @@ RSpec.describe Musica::Interpreter do
     it "raises when fm isn't installed" do
       allow(Open3).to receive(:capture2).and_raise(Errno::ENOENT)
 
-      expect { described_class::FM.call("resume") }.to raise_error(Musica::Error, /need fm/)
+      expect { described_class::FM.call("resume") }.to raise_error(Musica::Error, /Requests need fm/)
     end
   end
 end

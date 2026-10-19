@@ -28,7 +28,7 @@ module Musica
 
       output
     rescue Errno::ENOENT
-      raise Error, "Natural language commands need fm (macOS 26 with Apple Intelligence)"
+      raise Error, "Requests need fm (macOS 26 with Apple Intelligence); use -s to send AppleScript instead"
     end
 
     COMMANDS = {
