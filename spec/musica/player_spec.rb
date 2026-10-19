@@ -55,6 +55,6 @@ RSpec.describe Musica::Player do
   private
 
   def respond(command, output)
-    responses[%(tell application "Music" to #{command})] = output
+    responses[%(tell application "Music"\n#{command}\nend tell)] = output
   end
 end

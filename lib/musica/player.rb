@@ -16,7 +16,7 @@ module Musica
     end
 
     def tell(command)
-      runner.call(%(tell application "#{application}" to #{command}))
+      runner.call(%(tell application "#{application}"\n#{command}\nend tell))
     end
 
     private
