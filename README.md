@@ -48,6 +48,21 @@ commands that contain quotes in single quotes so the shell keeps them:
 
     $ musica 'play playlist "Favorite Songs"'
 
+### Natural language
+
+With `-n`, Musica uses Apple's on-device model, through the `fm` command, to
+turn a plain request into a command. This needs macOS 26 with Apple
+Intelligence.
+
+    $ musica -n skip this song
+    $ musica -n turn it down a bit
+    $ musica -n play Digital Love by Daft Punk
+    $ musica -n play something by Queen
+
+It understands play, pause, next and previous track, volume changes, and
+playing a track from your library by name or artist. Playing by name or artist
+only works with Music.
+
 ## Configuration
 
 Musica can be configured to work with different music players. Create a configuration file at:

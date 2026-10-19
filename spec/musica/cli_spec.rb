@@ -24,5 +24,17 @@ RSpec.describe Musica::Cli do
         expect(out.string).to eq("\u{1F3A7} Led Zeppelin - Black Dog\n")
       end
     end
+
+    context "with -n" do
+      let(:interpreter) { instance_double(Musica::Interpreter, call: "next track") }
+
+      it "tells the player the interpreted request, then prints the status" do
+        described_class.new(%w[-n skip this song], player: player, interpreter: interpreter, out: out).run
+
+        expect(interpreter).to have_received(:call).with("skip this song")
+        expect(player).to have_received(:tell).with("next track")
+        expect(out.string).to eq("\u{1F3A7} Led Zeppelin - Black Dog\n")
+      end
+    end
   end
 end
